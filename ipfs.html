@@ -1,0 +1,64 @@
+<html>
+  <head>
+    <!-- Moralis SDK code -->
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+    <script src="https://unpkg.com/moralis/dist/moralis.js"></script>
+  </head>
+  <body>
+    <h1>upload music</h1>
+
+    <button id="btn-login">Login</button>
+    <input type="text" name="metadataName" id="metadataName" placeholder="name"><br>
+    <input type="file" name="fileInput" id="fileInput"><br><br>
+    <textarea name="metadataDescription" id="metadataDescription" cols=20 rows="1"></textarea><br>
+    <button onclick=up()>upload</button>
+
+    <script>
+      // connect to Moralis server
+
+      const serverUrl = "https://y21dwudfcvlu.usemoralis.com:2053/server";
+      const appId = "RQX9IMYIMZBJWZX41J8nQW4LKBQCga9HVQM4EC8s";
+      Moralis.start({ serverUrl, appId });
+
+      //login with metamask
+
+      login = async () => {
+          Moralis.Web3.authenticate().then(function (user){
+              console.log('logged in');
+          })
+      }
+
+      // Upload music
+    uploadImage = async () => {
+      const data = fileInput.files[0]
+      const file = new Moralis.File(data.name, data)
+      await file.saveIPFS();
+      console.log(file.ipfs(), file.hash());
+      return file.ipfs();
+      }
+      //console.log (file hash)
+
+      uploadMetadata = async (mURL) => {
+          const name = document.getElementById('metadataName').value;
+          const description = document.getElementById('metadataDescription').value;
+          const metadata = {
+              "name": name,
+              "description": description,
+              "music": mURL
+          }
+          
+          const file = new Moralis.file("file.json",{base64 : btoa(JSON.stringify(metadata))});
+          await file.saveIPFS();
+
+          console.log(file.ipfs()); 
+      }
+
+      //function upload
+      up = async () => {
+          const image = await uploadImage();
+          await uploadMetadata(image)
+      }
+
+    </script>
+  </body>
+</html>
