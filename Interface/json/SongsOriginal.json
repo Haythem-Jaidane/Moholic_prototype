@@ -1,0 +1,53 @@
+{"SongsOriginal":[
+    {
+        "id":"4f",
+        "title":"Show me the meaning",
+        "image" : "assets/image/Songs/Showmethemeaning.png",
+        "mp3":"assets/audio/showmethemeaning.mp3",
+        "mp3_demo":"assets/audio/Demo/showmethemeaning.mp3",
+        "artist":"Backstreet Boys",
+        "artist_id":"7d",
+        "price": 1
+    },
+    {
+        "id":"4rf",
+        "title":"Incomplete",
+        "image" : "assets/image/Songs/Showmethemeaning.png",
+        "mp3":"pp.mp3",
+        "mp3_demo":"",
+        "artist":"Backstreet Boys",
+        "artist_id":"7d",
+        "price":0.8
+    },
+    {
+        "id":"4rf",
+        "title":"Incomplete",
+        "image" : "assets/image/Songs/Showmethemeaning.png",
+        "mp3":"pp.mp3",
+        "mp3_demo":"",
+        "artist":"Backstreet Boys",
+        "artist_id":"7d",
+        "price":0.005
+    },
+    {
+        "id":"4rf",
+        "title":"Incomplete",
+        "image" : "assets/image/Songs/Showmethemeaning.png",
+        "mp3":"pp.mp3",
+        "mp3_demo":"",
+        "artist":"Backstreet Boys",
+        "artist_id":"7d",
+        "price":0.04
+    },
+    {
+        "id":"4rf",
+        "title":"Incomplete",
+        "image" : "assets/image/Songs/Showmethemeaning.png",
+        "mp3":"pp.mp3",
+        "mp3_demo":"",
+        "artist":"Backstreet Boys",
+        "artist_id":"7d",
+        "price":5
+    }
+    
+]}

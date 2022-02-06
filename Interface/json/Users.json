@@ -1,0 +1,29 @@
+{"Users":[
+    {
+        "id":"7d",
+        "name":"Backstreet Boys",
+        "image":"assets/image/User/backstreetboys.png",
+        "artist":true,
+        "description":"an American pop supergroup that became popular during the 1990s and 2000s. They are the highest selling boy band of all time with 130 million records sold. The members are AJ McLean, Howie Dorough, Nick Carter, Kevin Richardson and Brian Littrell. Kevin Richardson left the group in 2006 and rejoined in 2012.",
+        "buys":1000,
+        "Follows":"5k"
+    },
+    {
+        "id":"rd",
+        "name":"test1",
+        "image":"",
+        "artist":false,
+        "description":"",
+        "buys":0,
+        "Follows":"0"
+    },
+    {
+        "id":"8d",
+        "name":"Haythem",
+        "image":"",
+        "artist":false,
+        "description":"",
+        "buys":0,
+        "Follows":"0"
+    }
+]}

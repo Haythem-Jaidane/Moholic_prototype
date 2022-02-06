@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>Moholic</title>
+  <link rel='stylesheet' href='https:////fonts.googleapis.com/css?family=Roboto+Condensed:700'>
+<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<link rel="stylesheet" href="./style.css">
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<!-- app root container -->
+<div class="app-wrap" id="app" v-cloak>
+
+  <!-- app player container -->
+  <main class="player-wrap fx fx-fade-in" ref="playerWrap" style="opacity: 0">
+
+    <!-- bg absolute elements -->
+    <figure class="player-bg" ref="playerBg"></figure>
+    <canvas class="player-canvas" ref="playerCanvas"></canvas>
+
+    <!-- main player layout -->
+    <section class="player-layout">
+
+      <!-- player top header -->
+      <header class="player-header flex-row flex-middle flex-stretch">
+        <h2 class="text-clip flex-1"><a @click="mainPagereturn()"><img src="logo.png" alt="" width="100px"></a></h2>
+        <div class="conn-bts d-flex">
+          <a class="bt" v-if="!connected" @click="connect()" style="margin-right:200px;">Connect Your Wallet</a>
+          <div v-if="connected" class="d-flex flex-row flex-middle flex-stretch">
+            <a class="bt " @click="deconnect()">Sign Out</a>
+            <a class="bt" style="margin-right:200px;" @click="showPlaylist()">My playlist</a>  
+            <h2 style="margin-right:10px;">{{connectedUserName}}</h2>
+            <img  src="profile.png" height="60" width="60" style="border-radius: 100%;">
+          </div>
+        </div>   
+        <button class="text-nowrap common-btn" @click="toggleSidebar( true )"><i class="fa fa-bars"></i></button>
+      </header>
+
+      <!-- player middle content area -->
+      <main class="player-content flex-row">
+
+        <!-- default greet message -->
+        <section class="player-greet" v-if="hasMainPage">
+          <div class="fx fx-slide-left push-bottom"><h1>Pick your Artist</h1></div>
+          <div class="fx fx-slide-left fx-delay-1 push-bottom">Welcome to the first music trading platform in the world. Join us and enjoy your life with Moholic </div>
+          <div class="fx fx-slide-up fx-delay-2 pad-top">
+            <button class="cta-btn" @click="toggleSidebar( true )"><i class="fa fa-headphones">&nbsp;</i> View Artists</button>
+            <button class="cta-btn" @click="showMarketplace ( )"> View Our Market Place</button>
+          </div>
+        </section>
+
+        <!-- Artist Profile Section -->
+        <section class="player-channel flex-1" v-if="hasArtistProfile">
+          <div class="row">
+            <div class="col-6 mb-4">
+              <div class="row mb-5">
+                <img class="img-round fx fx-drop-in fx-delay-1 col-6" :src="Artistprofil.image" height="350" width="350">
+                <h1 class="col-6" style="margin-top:150px ;">{{Artistprofil.name}}</h1>
+              </div>
+              <a>{{Artistprofil.description}}</a>
+            </div>
+            <div class="col-6 mt-5">
+              <h2 class="mb-4">Buys : {{Artistprofil.buys}}</h2>
+              <h2 class="mb-5">Follows : {{Artistprofil.Follows}}</h2>
+              <a class="bt" style="margin-left: 250px;">Follow</a>
+            </div>
+          </div>
+
+          <div class="row mb-5 mt-5">
+            <h2 class="mr-5 mb-5" style="margin-left: 600px;">Songs</h2>
+          </div>
+          
+          <div class="row" >
+            <div class="col-4" v-for="s of SongsOriginal" :key="s.id" style="margin-bottom:100px">
+              <div class="container">
+                <img class="img-round" :src="s.image" height="200" width="200" class="image">
+                <div class="overlay" @mouseover="playDemo(s.title)" @mouseleave="stopDemo(s.title)">
+                </div>
+                <audio :id="s.title" :src="s.mp3_demo"></audio>
+              </div>
+              <h2 class="mb-4 mt-5">{{s.title}}</h2>
+              <h2 class="mb-4">price : {{s.price}} USD</h2>
+              <div class="row">
+                <a class="bt col-9" @click="addDataJSON('SongCopies.json',s,SongCopies)">Buy</a>
+              </div>
+            </div>
+
+          </div> 
+        </section>
+
+        <!-- show Marketplace -->
+        <section class="player-channel flex-1" v-if="hasMarketplace">
+          <div class="row">
+            <div class="col-4 md-5 mb-5 " v-for="M of SongCopies" v-if="M.Market" :key="M.id" >
+              <img height="200" width="200" style="margin-left: 50px;" :src="M.image" class="img-round fx fx-drop-in fx-delay-1">
+              <div class="row">
+                <div class="col-7 md-6 ">
+                  <h3>{{M.title}}</h1>
+                  <h5>{{M.artist}}</h1>
+                  <h5>Owned By {{M.owner}}</h1>
+                  <div class="row">
+                    <a class="bt col-4" >Buy</a>
+                    <a class="bt col-5"><i class="fa fa-play"> Demo</i></a>
+                </div>
+                </div>
+                <div class="col-3 md-2">
+                  <h1>{{M.price}} USD</h1>
+                </div>
+              </div>    
+            </div>
+          </div>
+        </section>
+
+        <!-- show my playlist-->
+
+        <section class="player-channel flex-1" v-if="hasPlaylist && connected">
+          <div class="row">
+            <div class="col-md-4 mb-5" v-for="S of SongCopies" v-if="playListVerfication(S.owner_id)" :key="S.id" >
+                <img :src="S.image" style="margin-left: 58px" height="200" width="200" class="img-round fx fx-drop-in fx-delay-1 justify-content-center">
+                <h1>{{S.Title}}</h1>
+                <div class="row">
+                  <a class="bt col-4" @click="playSelectedSong(S)">Play</a>
+                  <a class="bt col-4">Sell</a>
+                </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- show tracks for selected channel if possible -->
+        <section class="player-errors flex-1 text-center" v-if="hasErrors" key="errors">
+          <div class="push-bottom fx fx-drop-in fx-delay-1">
+            <i class="fa fa-plug text-huge text-faded"></i>
+          </div>
+          <div class="push-bottom fx fx-slide-up fx-delay-2">
+            <h3>Oops, there's a problem!</h3>
+          </div>
+          <hr />
+          <div class="text-primary push-bottom fx fx-slide-up fx-delay-3" v-if="errors.init" v-text="errors.init"></div>
+          <div class="text-primary push-bottom fx fx-slide-up fx-delay-4" v-if="errors.stream" v-text="errors.stream"></div>
+          <hr />
+          <button class="cta-btn text-nowrap fx fx-slide-up fx-delay-5" @click="tryAgain">
+            <i class="fa fa-refresh"></i> Try again
+          </button>
+        </section>
+
+      </main>
+
+      <!-- player footer with controls -->
+      <footer class="player-footer flex-row flex-middle flex-space">
+        <!-- player controls 
+        <section class="player-controls flex-row flex-middle push-right" :class="{ 'disabled': !canPlay }">
+          <button class="common-btn" @click="togglePlay()">
+            <i v-if="playing" class="fa fa-stop fx fx-drop-in" key="stop"></i>
+            <i v-else class="fa fa-play fx fx-drop-in" key="play"></i>
+          </button>
+          <div class="form-slider push-left">
+            <i class="fa fa-volume-down"></i>
+            <input class="common-slider" type="range" min="0.0" max="1.0" step="0.1" value="0.5" v-model="volume" />
+            <i class="fa fa-volume-up"></i>
+          </div>
+          <div class="text-clip push-left">
+            <span>{{ timeDisplay }}</span>
+            <span class="fx fx-fade-in fx-delay-1" v-if="hasChannel" :key="channel.id">&nbsp;|&nbsp;{{ channel.title }}</span>
+          </div>
+        </section>
+        < player links -->
+        <section class="player-controls flex-row flex-middle push-right" v-if="playing && connected">
+          <div class="d-flex">
+            <img :src="songs.image" height="50" width="50">
+            <audio controls autoplay class="audio" :src="songs.mp3"></audio>
+          </div>
+          
+        </section>
+      </footer>
+
+    </section> <!-- layout wrapper -->
+
+    <!-- player stations overlay + sidebar -->
+    <section class="player-stations" :class="{ 'visible': sidebar }" @click="toggleSidebar( false )">
+      <aside class="player-stations-sidebar" @click.stop>
+        <!-- sidebar search -->
+        <header class="player-stations-header flex-row flex-middle flex-stretch">
+          <div class="form-input push-right">
+            <i class="fa fa-search"></i>
+            <input type="text" placeholder="Search station..." v-model="searchText" />
+          </div>
+          <button class="common-btn" @click="toggleSidebar( false )"><i class="fa fa-times-circle"></i></button>
+        </header>
+        <!-- sidebar stations list -->
+        <ul class="player-stations-list">
+          <!--<li class="player-stations-list-item flex-row flex-top flex-stretch" v-for="c of channelsList" :key="c.id" @click="selectChannel( c )" :class="{ 'active': c.active }">
+            <figure class="push-right if-small">
+              <img class="img-round" width="70" height="70" :src="c.largeimage" :alt="c.title" />
+            </figure>
+            <aside class="flex-1">
+              <div class="flex-row flex-middle flex-space">
+                <h6 class="text-bright text-clip">{{ c.title }}</h6>
+                <div class="text-secondary"><i class="fa fa-headphones"></i> {{ c.listeners | toCommas( 0 ) }}</div>
+              </div>
+              <div class="text-small">
+                <span class="text-faded text-uppercase text-small">{{ c.genre | toSpaces }}</span> <br />
+                {{ c.description }}
+              </div>
+            </aside>
+          </li>-->
+          <li class="player-stations-list-item flex-row flex-top flex-stretch" v-for="a of Users" v-if="a.artist" @Click="selectArtist(a)" :key="a.id" :class="{ 'active': a.active }">
+            <img :src="a.image" class="img-round fx fx-drop-in fx-delay-1" height="100" width="100">
+            <h5 class="mt-4" style="margin-left: 20px;">{{a.name}}</h5>
+          </li>
+        </ul>
+        <!-- sidebar sort options -->
+        <!--<footer class="player-stations-footer flex-row flex-middle flex-stretch">
+          <div class="flex-1 push-right">
+            <span @click="toggleSortOrder()" class="fa clickable" :class="{ 'fa-sort-amount-desc': sortOrder === 'desc', 'fa-sort-amount-asc': sortOrder === 'asc' }">&nbsp;</span>
+            <span class="text-faded">Sort: &nbsp;</span>
+            <span class="text-secondary popover">
+              <span class="clickable">{{ sortLabel }}</span>
+              <span class="popover-box popover-top">
+                <button @click="sortBy( 'title', 'asc' )">Station Name</button>
+                <button @click="sortBy( 'listeners', 'desc' )">Listeners Count</button>
+                <button @click="sortBy( 'genre', 'asc' )">Music Genre</button>
+              </span>
+            </span>
+          </div>
+          <div>&nbsp;</div>
+        </footer>-->
+      </aside>
+    </section>
+
+  </main> <!-- player -->
+
+</div> <!-- wrapper -->
+<!-- partial -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/three.js/96/three.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.min.js'></script>
+<script  src="./script.js"></script>
+<script src="./CryotoApi/require.js"></script>
+<script src="./CryotoApi/Api.js"></script>
+<script>
+
+  
+
+</script>
+
+</body>
+</html>

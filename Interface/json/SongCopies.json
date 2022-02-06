@@ -1,0 +1,75 @@
+{"SongCopies":[
+    {
+        "id":"5f",
+        "title":"Zeichen",
+        "image" : "assets/image/Songs/Zeichen.png",
+        "mp3":"assets/audio/all/zeichen.mp3",
+        "mp3_demo":"",
+        "artist":"Eminem",
+		"price":0,
+		"owner":"Haythem",
+		"owner_id":"8d",
+        "Market":false
+    },
+    {
+        "id":"4f",
+        "title":"Show me the meaning",
+        "image" : "assets/image/Songs/Showmethemeaning.png",
+        "mp3":"assets/audio/all/showmethemeaning.mp3",
+        "mp3_demo":"",
+        "artist":"Eminem",
+		"price":0,
+		"owner":"Haythem",
+		"owner_id":"8d",
+        "Market":false
+    },
+    {
+		"id": "1s",
+		"title": "Lost your self",
+		"image":"assets/image/Market/lostyourself.png",
+        "mp3":"pp.mp3",
+        "mp3_demo":"",
+		"artist":"Eminem",
+		"price":1,
+		"owner":"Foulen",
+		"owner_id":"",
+        "Market":true
+	},
+    {
+		"id": "5E",
+		"title": "All of me",
+		"image":"assets/image/Market/allofme.png",
+        "mp3":"pp.mp3",
+        "mp3_demo":"",
+		"artist":"John Legend",
+		"price":0.5,
+		"owner":"salem",
+		"owner_id":"",
+        "Market":true
+	},
+	{
+		"id": "5A",
+		"title": "Shap of you",
+		"image":"assets/image/Market/shapeofyou.png",
+        "mp3":"pp.mp3",
+        "mp3_demo":"",
+		"artist":"Ed Sheeran",
+		"price":0.001,
+		"owner":"mohmed",
+		"owner_id":"",
+        "Market":true
+	},
+	{
+		"id": "Y8",
+		"title": "Incomplete",
+		"image":"assets/image/Market/incomplete.png",
+        "mp3":"pp.mp3",
+        "mp3_demo":"",
+		"artist":"Backstreet Boys",
+		"price":0.2,
+		"owner":"el malem",
+		"owner_id":"",
+        "Market":true
+	}
+
+]}
